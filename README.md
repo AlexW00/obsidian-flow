@@ -1,4 +1,4 @@
-# obsidian-react-starter
+# obsidian-flow
 
 A starter template for creating an [Obsidian](https://obsidian.md/) plugin with [ReactJS](https://reactjs.org/).
 
