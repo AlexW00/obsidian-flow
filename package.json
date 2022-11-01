@@ -9,7 +9,8 @@
 		"lint": "eslint . --ext .ts",
 		"dev": "npm run lint && rollup -c && ./copy_to_vault.sh ~/Desktop/YouTube",
 		"build:nolint": "NODE_ENV=production rollup -c",
-		"build": "NODE_ENV=production npm run lint && rollup -c"
+		"build": "NODE_ENV=production npm run lint && rollup -c",
+		"format": ""
 	},
 	"dependencies": {
 		"@types/react": "17.0.3",

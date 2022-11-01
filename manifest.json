@@ -1,10 +1,10 @@
 {
-  "id": "flow",
-  "name": "Flow",
-  "description": "Node based automation toolkit for Obsidian. ",
-  "version": "0.0.0",
-  "author": "Alexander Weichart",
-  "authorUrl": "https://github.com/AlexW00/",
-  "isDesktopOnly": true,
-  "minAppVersion": "1.0.0"
+	"id": "flow",
+	"name": "Flow",
+	"description": "Node based automation toolkit for Obsidian. ",
+	"version": "0.0.0",
+	"author": "Alexander Weichart",
+	"authorUrl": "https://github.com/AlexW00/",
+	"isDesktopOnly": true,
+	"minAppVersion": "1.0.0"
 }
