@@ -1,4 +1,5 @@
 import create from "zustand";
+import { persist } from "zustand/middleware";
 import {
 	NodeChange,
 	EdgeChange,
@@ -37,90 +38,101 @@ interface AppStore extends AppModel {
 }
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
-const useStore = create<AppStore>((set, get) => {
-	const appState: AppStore = {
-		flows: appModel.flows, // Example flow, TODO: Remove
-		// Flows
-		setFlow: (flow: FlowModel) =>
-			set(
-				produce((draft: AppStore) => {
-					const flowIndex = draft.flows.findIndex((f) => f.name === flow.name);
-					if (flowIndex !== -1) {
-						draft.flows[flowIndex] = flow;
-					} else {
-						draft.flows.push(flow);
-					}
-				})
-			),
-		getFlow: (name: string): FlowModel | undefined =>
-			get().flows.find((f) => f.name === name),
+const useStore = create(
+	persist<AppStore>(
+		(set, get) => ({
+			flows: appModel.flows, // Example flow, TODO: Remove
 
-		// Editor
-		onNodesChange: (flowName: string, changes: NodeChange[]) =>
-			set(
-				produce((draft: AppStore) => {
-					const flow = draft.flows.find((f) => f.name === flowName);
-					if (flow) {
-						flow.editorModel.nodes = applyNodeChanges(
-							changes,
-							flow.editorModel.nodes
+			// Flows
+			setFlow: (flow: FlowModel) =>
+				set(
+					produce((draft: AppStore) => {
+						const flowIndex = draft.flows.findIndex(
+							(f) => f.name === flow.name
 						);
-					}
-				})
-			),
-		getOnNodesChange: (flowName: string): ((changes: NodeChange[]) => void) => {
-			return (changes: NodeChange[]) => {
-				get().onNodesChange(flowName, changes);
-			};
-		},
+						if (flowIndex !== -1) {
+							draft.flows[flowIndex] = flow;
+						} else {
+							draft.flows.push(flow);
+						}
+					})
+				),
+			getFlow: (name: string): FlowModel | undefined =>
+				get().flows.find((f) => f.name === name),
 
-		onEdgesChange: (flowName: string, changes: EdgeChange[]) =>
-			set(
-				produce((draft: AppStore) => {
-					const flow = draft.flows.find((f) => f.name === flowName);
-					if (flow)
-						flow.editorModel.edges = applyEdgeChanges(
-							changes,
-							flow.editorModel.edges
-						);
-				})
-			),
+			// Editor
+			onNodesChange: (flowName: string, changes: NodeChange[]) =>
+				set(
+					produce((draft: AppStore) => {
+						const flow = draft.flows.find((f) => f.name === flowName);
+						if (flow) {
+							flow.editorModel.nodes = applyNodeChanges(
+								changes,
+								flow.editorModel.nodes
+							);
+						}
+					})
+				),
+			getOnNodesChange: (
+				flowName: string
+			): ((changes: NodeChange[]) => void) => {
+				return (changes: NodeChange[]) => {
+					get().onNodesChange(flowName, changes);
+				};
+			},
 
-		getOnEdgesChange: (flowName: string): ((changes: EdgeChange[]) => void) => {
-			return (changes: EdgeChange[]) => {
-				get().onEdgesChange(flowName, changes);
-			};
-		},
+			onEdgesChange: (flowName: string, changes: EdgeChange[]) =>
+				set(
+					produce((draft: AppStore) => {
+						const flow = draft.flows.find((f) => f.name === flowName);
+						if (flow)
+							flow.editorModel.edges = applyEdgeChanges(
+								changes,
+								flow.editorModel.edges
+							);
+					})
+				),
 
-		onConnect: (flowName, connection) =>
-			set(
-				produce((draft: AppStore) => {
-					const flow = draft.flows.find((f) => f.name === flowName);
-					if (flow) {
-						flow.editorModel.edges = addEdge(
-							connection,
-							flow.editorModel.edges
-						);
-					}
-				})
-			),
+			getOnEdgesChange: (
+				flowName: string
+			): ((changes: EdgeChange[]) => void) => {
+				return (changes: EdgeChange[]) => {
+					get().onEdgesChange(flowName, changes);
+				};
+			},
 
-		getOnConnect: (flowName: string): ((connection: Connection) => void) => {
-			return (connection: Connection) => {
-				get().onConnect(flowName, connection);
-			};
-		},
+			onConnect: (flowName, connection) =>
+				set(
+					produce((draft: AppStore) => {
+						const flow = draft.flows.find((f) => f.name === flowName);
+						if (flow) {
+							flow.editorModel.edges = addEdge(
+								connection,
+								flow.editorModel.edges
+							);
+						}
+					})
+				),
 
-		getEditorCallbacks: (flowName: string) => {
-			return {
-				onNodesChange: get().getOnNodesChange(flowName),
-				onEdgesChange: get().getOnEdgesChange(flowName),
-				onConnect: get().getOnConnect(flowName),
-			};
-		},
-	};
+			getOnConnect: (flowName: string): ((connection: Connection) => void) => {
+				return (connection: Connection) => {
+					get().onConnect(flowName, connection);
+				};
+			},
 
-	return appState;
-});
+			getEditorCallbacks: (flowName: string) => {
+				return {
+					onNodesChange: get().getOnNodesChange(flowName),
+					onEdgesChange: get().getOnEdgesChange(flowName),
+					onConnect: get().getOnConnect(flowName),
+				};
+			},
+		}),
+		{
+			name: "flow-app-store",
+			getStorage: () => localStorage,
+		}
+	)
+);
 
 export default useStore;
