@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
+import { StringHandle } from "src/classes/nodes/definition/io/handles/types/base/StringHandle";
+import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
 import useStore from "src/data/store";
 import { FlowNameContext } from "src/react/contexts/FlowContext";
-import { CustomNodeDefinition, ConnectionDefinition } from "./CustomNode";
 
 export const CustomNodeComponent = (id: string) => {
 	const flowName = useContext(FlowNameContext);
@@ -28,21 +29,18 @@ export const CustomNodeComponent = (id: string) => {
 	);
 };
 
-export const ExampleNode: CustomNodeDefinition<
-	ConnectionDefinition,
-	ConnectionDefinition
-> = {
+export const ExampleNode: CustomNodeDefinition = {
 	io: {
 		inputs: {
 			input1: {
 				name: "Input 1",
-				type: "string",
+				type: StringHandle,
 			},
 		},
 		outputs: {
 			output1: {
 				name: "Output 1",
-				type: "string",
+				type: StringHandle,
 			},
 		},
 	},

@@ -14,12 +14,9 @@ import produce from "immer";
 import appModel from "./example/appModel";
 import AppModel, { findFlow, setFlow } from "./models/AppModel";
 import FlowModel, { getOutputs } from "./models/FlowModel";
-import {
-	Inputs,
-	OutputData,
-	Outputs,
-} from "src/components/ui/molecules/CustomNode";
 import { findNode, getInputs } from "./models/EditorModel";
+import { Inputs } from "src/classes/nodes/outputs/Inputs";
+import { OutputData, Outputs } from "src/classes/nodes/outputs/Outputs";
 
 interface AppStore extends AppModel {
 	// Flows
@@ -104,7 +101,7 @@ const useStore = create<AppStore>(
 			};
 		},
 
-		onConnect: (flowName, connection) =>
+		onConnect: (flowName: string, connection) =>
 			set(
 				produce((draft: AppStore) => {
 					console.log("onConnect", connection);

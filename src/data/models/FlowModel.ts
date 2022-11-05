@@ -1,4 +1,4 @@
-import { Outputs } from "src/components/ui/molecules/CustomNode";
+import { Outputs } from "src/components/ui/molecules/nodes/CustomNode";
 import EditorModel, { findNode } from "./EditorModel";
 
 type FlowModel = {

@@ -1,5 +1,5 @@
 import { Edge, Node } from "reactflow";
-import { ExampleNode } from "src/components/ui/molecules/ExampleNode";
+import { ExampleNode } from "src/components/ui/molecules/nodes/ExampleNode";
 import EditorModel from "../models/EditorModel";
 
 const nodes = [

@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import ReactFlow, { MiniMap, Controls, Background } from "reactflow";
 import "reactflow/dist/style.css";
 import useStore from "src/data/store";
-import { CustomNodeComponent } from "../molecules/CustomNode";
+import { CustomNodeComponent } from "../molecules/nodes/CustomNode";
 
 export const Editor = () => {
 	const appState = useStore();

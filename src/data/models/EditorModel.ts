@@ -1,9 +1,9 @@
 import { Edge, Node } from "reactflow";
 import {
-	ConnectionDefinition,
+	NodeIO,
 	CustomNodeData,
 	Inputs,
-} from "src/components/ui/molecules/CustomNode";
+} from "src/components/ui/molecules/nodes/CustomNode";
 
 type EditorModel = {
 	nodes: Node<CustomNodeData>[];
@@ -33,7 +33,7 @@ export const findEdgeIndex = (id: string, editorModel: EditorModel): number => {
 };
 
 export const getInputs = (nodeId: string, editorModel: EditorModel): Inputs => {
-	const inputDefinition: ConnectionDefinition =
+	const inputDefinition: NodeIO =
 		findNode(nodeId, editorModel)?.data?.definition?.io?.inputs ?? {};
 
 	const edges = editorModel.edges.filter((e) => e.target === nodeId);
