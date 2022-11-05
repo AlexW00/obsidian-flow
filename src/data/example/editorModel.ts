@@ -26,6 +26,7 @@ const nodes = [
 		data: {
 			definition: ExampleNode,
 			outputs: {},
+			inputs: {},
 		},
 		position: { x: 400, y: 400 },
 	},
@@ -35,6 +36,7 @@ const nodes = [
 		data: {
 			definition: ExampleNode,
 			outputs: {},
+			inputs: {},
 		},
 		position: { x: 300, y: 300 },
 	},

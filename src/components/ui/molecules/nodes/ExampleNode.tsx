@@ -11,15 +11,14 @@ export const CustomNodeComponent = (id: string) => {
 	const store = useStore();
 	const inputs = store.getInputs(flowName, id);
 	const outputs = store.getOutputs(flowName, id);
-	const setOutputs = store.setOutputs;
+	const setOutput = store.setOutput;
 
 	console.log("CustomNodeComponent", id, inputs, outputs);
 
 	const onClickButton = () => {
 		console.log("onClickButton", outputs);
-		const newOutputs = { ...outputs };
-		newOutputs.output1 = (outputs.output1 ?? "") + "a";
-		setOutputs(flowName, id, newOutputs);
+		const newOutput = (outputs.output1 ?? "") + "!";
+		setOutput(flowName, id, "output1", newOutput);
 	};
 	return (
 		<div>

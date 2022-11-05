@@ -15,7 +15,7 @@ import produce from "immer";
 import appModel from "./example/appModel";
 import AppModel, { findFlow, setFlow } from "./models/AppModel";
 import FlowModel, { getOutputs } from "./models/FlowModel";
-import { findNode, getInputs } from "./models/EditorModel";
+import { findConnectedNodes, findNode, getInputs } from "./models/EditorModel";
 import { Inputs } from "src/classes/nodes/outputs/Inputs";
 import { OutputData, Outputs } from "src/classes/nodes/outputs/Outputs";
 import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
@@ -52,7 +52,12 @@ interface AppStore extends AppModel {
 		outputName: string
 	): OutputData | undefined;
 
-	setOutputs(flowName: string, nodeId: string, outputs: Outputs): void;
+	setOutput: (
+		flowName: string,
+		nodeId: string,
+		outputId: string,
+		output: OutputData
+	) => void;
 
 	// Node
 
@@ -147,16 +152,33 @@ const useStore = create<AppStore>(
 			return getOutputs(get().getFlow(flowName), nodeId)[outputId];
 		},
 
-		setOutputs: (flowName: string, nodeId: string, outputs: Outputs): void => {
-			console.log("setOutputs", flowName, nodeId, outputs);
+		setOutput: (
+			flowName: string,
+			nodeId: string,
+			outputId: string,
+			output: OutputData
+		) => {
 			set(
 				produce((draft: AppStore) => {
 					const flow = findFlow(flowName, draft);
 					if (flow) {
-						const node = findNode(nodeId, flow.editorModel);
-						if (node) {
-							node.data.outputs = outputs;
-						}
+						const editorModel = flow.editorModel;
+						// update outputs
+						const node = findNode(nodeId, editorModel);
+						if (node) node.data.outputs[outputId] = output;
+
+						// update inputs
+						const connectedNodes = findConnectedNodes(
+							nodeId,
+							false,
+							outputId,
+							editorModel
+						);
+
+						connectedNodes.forEach((connectedNode) => {
+							connectedNode.node.data.inputs[connectedNode.connectedOn] =
+								output;
+						});
 					}
 				})
 			);

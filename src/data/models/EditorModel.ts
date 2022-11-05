@@ -1,5 +1,6 @@
 import { Edge, Node } from "reactflow";
 import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
+import { Inputs } from "src/classes/nodes/outputs/Inputs";
 
 type EditorModel = {
 	nodes: Node<CustomNodeData>[];
@@ -11,6 +12,32 @@ export const findNode = (
 	editorModel: EditorModel
 ): Node<CustomNodeData> | undefined => {
 	return editorModel.nodes.find((n) => n.id === id);
+};
+
+export const findConnectedNodes = (
+	id: string,
+	isTarget: boolean,
+	handleId: string,
+	editorModel: EditorModel
+): { node: Node<CustomNodeData>; connectedOn: string }[] => {
+	return (
+		editorModel.edges
+			// find all edges connected to the handle
+			.filter((e) =>
+				isTarget
+					? e.target === id && e.targetHandle === handleId
+					: e.source === id && e.sourceHandle === handleId
+			)
+			// get the nodes connected to the edges
+			.map((e) => {
+				return {
+					node: findNode(isTarget ? e.source : e.target, editorModel),
+					connectedOn: isTarget ? e.sourceHandle : e.targetHandle,
+				};
+			})
+			// filter out undefined nodes
+			.filter((r) => r.node !== undefined)
+	);
 };
 
 export const findNodeIndex = (id: string, editorModel: EditorModel): number => {
@@ -29,29 +56,9 @@ export const findEdgeIndex = (id: string, editorModel: EditorModel): number => {
 };
 
 export const getInputs = (nodeId: string, editorModel: EditorModel): Inputs => {
-	const inputDefinition: NodeIO =
-		findNode(nodeId, editorModel)?.data?.definition?.io?.inputs ?? {};
-
-	const edges = editorModel.edges.filter((e) => e.target === nodeId);
-	const connectedNodes: Map<string, Node<CustomNodeData>> = new Map();
-	edges
-		.filter((e, i, a) => a.findIndex((e2) => e2.source === e.source) === i)
-		.map((e) => findNode(e.source, editorModel))
-		.forEach((n) => {
-			if (n) connectedNodes.set(n.id, n);
-		});
-
-	const inputs: Inputs = {};
-
-	if (edges && connectedNodes) {
-		for (const key of Object.keys(inputDefinition)) {
-			const edge = edges.find((e) => e.targetHandle === key);
-			const connectedNode = connectedNodes.get(edge?.source);
-			inputs[key] = connectedNode?.data?.outputs?.[edge?.sourceHandle ?? ""];
-		}
-	}
-
-	return inputs;
+	const node = findNode(nodeId, editorModel);
+	if (node) return node.data.inputs;
+	else return {};
 };
 
 export default EditorModel;
