@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { NumberHandle } from "src/classes/nodes/definition/io/handles/types/base/NumberHandle";
+import { ObjectHandle } from "src/classes/nodes/definition/io/handles/types/base/ObjectHandle";
 import { StringHandle } from "src/classes/nodes/definition/io/handles/types/base/StringHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
 import useStore from "src/data/store";
@@ -36,11 +38,19 @@ export const ExampleNode: CustomNodeDefinition = {
 				name: "Input 1",
 				type: StringHandle,
 			},
+			input2: {
+				name: "Input 2",
+				type: NumberHandle,
+			},
 		},
 		outputs: {
 			output1: {
 				name: "Output 1",
 				type: StringHandle,
+			},
+			output2: {
+				name: "Output 2",
+				type: ObjectHandle,
 			},
 		},
 	},

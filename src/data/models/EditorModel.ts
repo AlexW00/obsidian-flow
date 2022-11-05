@@ -1,9 +1,5 @@
 import { Edge, Node } from "reactflow";
-import {
-	NodeIO,
-	CustomNodeData,
-	Inputs,
-} from "src/components/ui/molecules/nodes/CustomNode";
+import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
 
 type EditorModel = {
 	nodes: Node<CustomNodeData>[];

@@ -15,7 +15,7 @@ export const canConnect = (
 	else if (target.name === source.name) return true;
 	else
 		return (
-			target.allowedInputs.some(
+			target.allowedInputs?.some(
 				(input) => input === source || input === AnyHandle
 			) ?? false
 		);

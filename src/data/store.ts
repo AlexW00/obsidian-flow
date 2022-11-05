@@ -7,6 +7,7 @@ import {
 	applyNodeChanges,
 	applyEdgeChanges,
 	addEdge,
+	Node,
 } from "reactflow";
 
 import produce from "immer";
@@ -17,6 +18,7 @@ import FlowModel, { getOutputs } from "./models/FlowModel";
 import { findNode, getInputs } from "./models/EditorModel";
 import { Inputs } from "src/classes/nodes/outputs/Inputs";
 import { OutputData, Outputs } from "src/classes/nodes/outputs/Outputs";
+import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
 
 interface AppStore extends AppModel {
 	// Flows
@@ -39,7 +41,7 @@ interface AppStore extends AppModel {
 		onConnect: (connection: Connection) => void;
 	};
 
-	// Node
+	// Node IO
 	getInputs(flowName: string, nodeId: string): Inputs;
 	getOutputs(flowName: string, nodeId: string): Outputs | undefined;
 
@@ -51,6 +53,10 @@ interface AppStore extends AppModel {
 	): OutputData | undefined;
 
 	setOutputs(flowName: string, nodeId: string, outputs: Outputs): void;
+
+	// Node
+
+	findNode(flowName: string, nodeId: string): Node<CustomNodeData> | undefined;
 }
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
@@ -104,7 +110,6 @@ const useStore = create<AppStore>(
 		onConnect: (flowName: string, connection) =>
 			set(
 				produce((draft: AppStore) => {
-					console.log("onConnect", connection);
 					const flow = draft.flows.find((f) => f.name === flowName);
 					if (flow) {
 						flow.editorModel.edges = addEdge(
@@ -166,6 +171,15 @@ const useStore = create<AppStore>(
 			inputId: string
 		): OutputData | undefined => {
 			return getInputs(nodeId, get().getFlow(flowName).editorModel)[inputId];
+		},
+
+		// Node finding
+		findNode: (
+			nodeId: string,
+			flowName: string
+		): Node<CustomNodeData> | undefined => {
+			const flow = findFlow(flowName, get());
+			return findNode(nodeId, flow.editorModel);
 		},
 	})
 	// 	{

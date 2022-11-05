@@ -1,12 +1,11 @@
 import React, { FunctionComponent, PropsWithChildren, useEffect } from "react";
 import { Handle, NodeProps, Position, useUpdateNodeInternals } from "reactflow";
-import { CustomNode } from "src/classes/nodes/CustomNode";
+import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
 import { NodeHandles } from "src/classes/nodes/definition/io/handles/NodeHandles";
 
-export const CustomNodeComponent: FunctionComponent<NodeProps<CustomNode>> = (
-	props: PropsWithChildren<NodeProps<CustomNode>>,
-	_context?: any
-) => {
+export const CustomNodeComponent: FunctionComponent<
+	NodeProps<CustomNodeData>
+> = (props: PropsWithChildren<NodeProps<CustomNodeData>>, _context?: any) => {
 	const calculateHandleTopOffset = (
 		index: number,
 		numHandles: number
@@ -27,13 +26,17 @@ export const CustomNodeComponent: FunctionComponent<NodeProps<CustomNode>> = (
 
 		return keys.map((key, index) => {
 			const handleTopOffset = calculateHandleTopOffset(index, keys.length);
+			const type = io[key].type;
 			return (
 				<Handle
 					key={key}
 					id={key}
 					type={isInput ? "target" : "source"}
 					position={isInput ? Position.Left : Position.Right}
-					style={{ top: handleTopOffset }}
+					style={{
+						top: handleTopOffset,
+						background: type.color,
+					}}
 				/>
 			);
 		});
