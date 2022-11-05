@@ -1,4 +1,5 @@
 import { Edge, Node } from "reactflow";
+import { ExampleNode } from "src/components/ui/molecules/ExampleNode";
 import EditorModel from "../models/EditorModel";
 
 const nodes = [
@@ -8,7 +9,6 @@ const nodes = [
 		data: { label: "Input" },
 		position: { x: 250, y: 25 },
 	},
-
 	{
 		id: "2",
 		data: { label: "Default" },
@@ -19,6 +19,24 @@ const nodes = [
 		type: "output",
 		data: { label: "Output" },
 		position: { x: 250, y: 250 },
+	},
+	{
+		id: "4",
+		type: "custom",
+		data: {
+			definition: ExampleNode,
+			outputs: {},
+		},
+		position: { x: 400, y: 400 },
+	},
+	{
+		id: "5",
+		type: "custom",
+		data: {
+			definition: ExampleNode,
+			outputs: {},
+		},
+		position: { x: 300, y: 300 },
 	},
 ] as Node[];
 

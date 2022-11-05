@@ -1,12 +1,12 @@
 import { ComponentType } from "react";
-import { Editor } from "../ui/organisms/Editor";
+import { Flow } from "../templates/Flow";
 import ReactLeaf from "./ReactLeaf";
 
 // ~~~~~ View for a single flow ~~~~ //
 
 export default class FlowLeaf extends ReactLeaf {
-	getReactComponentType(): ComponentType<typeof Editor> {
-		return Editor;
+	getReactComponentType(): ComponentType<typeof Flow> {
+		return Flow;
 	}
 
 	getDisplayText(): string {

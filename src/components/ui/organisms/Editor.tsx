@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
 import ReactFlow, { MiniMap, Controls, Background } from "reactflow";
 import "reactflow/dist/style.css";
 import useStore from "src/data/store";
+import { CustomNodeComponent } from "../molecules/CustomNode";
 
 export const Editor = () => {
 	const appState = useStore();
+
+	const nodeTypes = useMemo(() => ({ custom: CustomNodeComponent }), []);
 
 	const { onNodesChange, onEdgesChange, onConnect } =
 		appState.getEditorCallbacks("example-flow");
@@ -13,6 +16,7 @@ export const Editor = () => {
 
 	return (
 		<ReactFlow
+			nodeTypes={nodeTypes}
 			nodes={nodes}
 			edges={edges}
 			onNodesChange={onNodesChange}
