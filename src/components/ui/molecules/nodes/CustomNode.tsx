@@ -6,6 +6,7 @@ import { NodeHandles } from "src/classes/nodes/definition/io/handles/NodeHandles
 export const CustomNodeComponent: FunctionComponent<
 	NodeProps<CustomNodeData>
 > = (props: PropsWithChildren<NodeProps<CustomNodeData>>, _context?: any) => {
+	console.log("rendering CustomNodeComponent", props.id);
 	const calculateHandleTopOffset = (
 		index: number,
 		numHandles: number
@@ -41,8 +42,6 @@ export const CustomNodeComponent: FunctionComponent<
 			);
 		});
 	};
-
-	console.log("CustomNodeComponent", props.data);
 
 	return (
 		<div className="custom-node react-flow__node-default">
