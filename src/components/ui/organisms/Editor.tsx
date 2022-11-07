@@ -18,13 +18,14 @@ import { CustomNodeComponent } from "../molecules/nodes/CustomNode";
 
 export const Editor = () => {
   console.log("Rendering Editor");
+  const flowName = "example-flow";
   const nodeTypes = useMemo(() => ({ custom: CustomNodeComponent }), []);
-  const [nodes, setNodes] = useNodes();
-  const [edges, setEdges] = useEdges();
+  const [nodes, setNodes] = useNodes(flowName);
+  const [edges, setEdges] = useEdges(flowName);
 
   const handleConnect = (connection: Connection) => {
-    const sourceNode = useNode(connection.source);
-    const targetNode = useNode(connection.target);
+    const sourceNode = useNode(connection.source, flowName);
+    const targetNode = useNode(connection.target, flowName);
 
     const sourceHandleType =
       sourceNode.data.definition.io.outputs[connection.sourceHandle].type;

@@ -13,11 +13,11 @@ export const CustomNodeComponent = (id: string) => {
   const flowName = useContext(FlowNameContext);
   console.log("Rendering CustomNodeComponent in flow named", flowName);
 
-  const inputs = useInputs(id);
-  const [outputs] = useOutputs(id);
+  const inputs = useInputs(id, flowName);
+  const [outputs] = useOutputs(id, flowName);
 
   const setOutput = (output: OutputData, outputId: string) =>
-    useOutput(outputId, id)[1](output);
+    useOutput(outputId, id, flowName)[1](output);
 
   console.log("CustomNodeComponent", id, inputs, outputs);
 
