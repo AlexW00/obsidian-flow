@@ -4,21 +4,20 @@ import { ObjectHandle } from "src/classes/nodes/definition/io/handles/types/base
 import { StringHandle } from "src/classes/nodes/definition/io/handles/types/base/StringHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
 import { OutputData } from "src/classes/nodes/outputs/Outputs";
-import { Setters } from "src/data/setters/Setters";
-import useAppModel from "src/data/store";
 import { FlowNameContext } from "src/react/contexts/FlowContext";
-import { useInputs } from "src/react/hooks/selectors/useInputs";
-import { useOutputs } from "src/react/hooks/selectors/useOutputs";
+import { useInputs } from "src/react/hooks/state/useInputs";
+import { useOutput } from "src/react/hooks/state/useOutput";
+import { useOutputs } from "src/react/hooks/state/useOutputs";
 
 export const CustomNodeComponent = (id: string) => {
   const flowName = useContext(FlowNameContext);
   console.log("Rendering CustomNodeComponent in flow named", flowName);
 
   const inputs = useInputs(id);
-  const outputs = useOutputs(id);
+  const [outputs] = useOutputs(id);
 
   const setOutput = (output: OutputData, outputId: string) =>
-    Setters.setOutput(output, outputId, id, flowName, useAppModel);
+    useOutput(outputId, id)[1](output);
 
   console.log("CustomNodeComponent", id, inputs, outputs);
 

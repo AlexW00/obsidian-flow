@@ -1,10 +1,13 @@
 import { useContext } from "react";
-import FlowModel from "src/data/models/FlowModel";
+import { Edge } from "reactflow";
 import { selectFlow } from "src/data/selectors/app/selectFlow";
+import { selectEdge } from "src/data/selectors/editor/selectEdge";
 import useAppModel from "src/data/store";
 import { FlowNameContext } from "src/react/contexts/FlowContext";
 
-export const useFlow = (flowName?: string): FlowModel | undefined => {
+export const useEdge = (id: string, flowName?: string): Edge => {
   const _flowName = flowName || useContext(FlowNameContext);
-  return useAppModel((store) => selectFlow(_flowName, store));
+  return useAppModel((store) =>
+    selectEdge(id, selectFlow(_flowName, store)?.editorModel)
+  );
 };

@@ -4,31 +4,23 @@ import ReactFlow, {
   Controls,
   Background,
   Connection,
-  NodeChange,
-  EdgeChange,
+  addEdge,
+  applyNodeChanges,
+  applyEdgeChanges,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { canConnect } from "src/classes/nodes/definition/io/handles/types/NodeHandleType";
-import { Setters } from "src/data/setters/Setters";
-import useAppModel from "src/data/store";
-import { useFlow } from "src/react/hooks/selectors/useFlow";
-import { useNode } from "src/react/hooks/selectors/useNode";
+import { useEdges } from "src/react/hooks/state/useEdges";
+
+import { useNode } from "src/react/hooks/state/useNode";
+import { useNodes } from "src/react/hooks/state/useNodes";
 import { CustomNodeComponent } from "../molecules/nodes/CustomNode";
 
 export const Editor = () => {
   console.log("Rendering Editor");
   const nodeTypes = useMemo(() => ({ custom: CustomNodeComponent }), []);
-  const flowName = "example-flow";
-
-  const onConnect = (connection: Connection) =>
-    Setters.setConnection(connection, flowName, useAppModel);
-  const onNodesChange = (changes: NodeChange[]) =>
-    Setters.setNodeChanges(changes, flowName, useAppModel);
-  const onEdgesChange = (changes: EdgeChange[]) =>
-    Setters.setEdgeChanges(changes, flowName, useAppModel);
-
-  const flow = useFlow();
-  const { nodes, edges } = flow.editorModel;
+  const [nodes, setNodes] = useNodes();
+  const [edges, setEdges] = useEdges();
 
   const handleConnect = (connection: Connection) => {
     const sourceNode = useNode(connection.source);
@@ -39,7 +31,8 @@ export const Editor = () => {
     const targetHandleType =
       targetNode.data.definition.io.inputs[connection.targetHandle].type;
     if (canConnect(sourceHandleType, targetHandleType)) {
-      onConnect(connection);
+      const newEdges = addEdge(connection, edges);
+      setEdges(newEdges);
     } else {
       console.log("Cannot connect", sourceHandleType, targetHandleType);
     }
@@ -50,8 +43,14 @@ export const Editor = () => {
       nodeTypes={nodeTypes}
       nodes={nodes}
       edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
+      onNodesChange={(nodeChanges) => {
+        const newNodes = applyNodeChanges(nodeChanges, nodes);
+        setNodes(newNodes);
+      }}
+      onEdgesChange={(edgeChanges) => {
+        const newEdges = applyEdgeChanges(edgeChanges, edges);
+        setEdges(newEdges);
+      }}
       onConnect={handleConnect}
     >
       <MiniMap />

@@ -5,6 +5,5 @@ export const selectFlow = (
   name: string,
   appModel: AppModel
 ): FlowModel | undefined => {
-  console.log("selectFlow", name);
   return appModel.flows.find((f) => f.name === name);
 };
