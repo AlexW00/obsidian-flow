@@ -5,7 +5,7 @@ import produce from "immer";
 import AppModel from "src/data/models/AppModel";
 import { selectFlow } from "src/data/selectors/app/selectFlow";
 import { selectOutputs } from "src/data/selectors/editor/selectOutputs";
-import { setOutputs } from "src/data/setters/editor/setOutputs";
+import { setOutput } from "src/data/setters/editor/setOutput";
 
 export const useOutput = (
   outputId: string,
@@ -22,7 +22,7 @@ export const useOutput = (
     (output: OutputData) =>
       useAppModel.setState(
         produce((draft: AppModel) => {
-          setOutputs(output, nodeId, flowName, draft);
+          setOutput(output, outputId, nodeId, flowName, draft);
         })
       ),
   ];
