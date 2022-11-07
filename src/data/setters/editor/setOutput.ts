@@ -13,7 +13,7 @@ export const setOutput = (
 ): void => {
   // update outputs
   const editorModel = selectFlow(flowName, appModel).editorModel;
-  const node = selectNode(nodeId, editorModel);
+  const node = selectNode(nodeId, editorModel.nodes);
   if (node) node.data.outputs[id] = output;
 
   // update inputs

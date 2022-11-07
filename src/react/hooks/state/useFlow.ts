@@ -7,9 +7,8 @@ import { setFlow } from "src/data/setters/app/setFlow";
 import useAppModel from "src/data/store";
 
 export const useFlow = (flowName: string): MutableHookResult<FlowModel> => {
-  return [
-    useAppModel((store) => selectFlow(flowName, store)),
-    (flow: FlowModel) =>
-      useAppModel.setState(produce((draft: AppModel) => setFlow(flow, draft))),
-  ];
+  const flow = useAppModel((store) => selectFlow(flowName, store)),
+    setter = (flow: FlowModel) =>
+      useAppModel.setState(produce((draft: AppModel) => setFlow(flow, draft)));
+  return [flow, setter];
 };

@@ -3,7 +3,6 @@ import { NumberHandle } from "src/classes/nodes/definition/io/handles/types/base
 import { ObjectHandle } from "src/classes/nodes/definition/io/handles/types/base/ObjectHandle";
 import { StringHandle } from "src/classes/nodes/definition/io/handles/types/base/StringHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
-import { OutputData } from "src/classes/nodes/outputs/Outputs";
 import { FlowNameContext } from "src/react/contexts/FlowContext";
 import { useInputs } from "src/react/hooks/state/useInputs";
 import { useOutput } from "src/react/hooks/state/useOutput";
@@ -16,15 +15,14 @@ export const CustomNodeComponent = (id: string) => {
   const inputs = useInputs(id, flowName);
   const [outputs] = useOutputs(id, flowName);
 
-  const setOutput = (output: OutputData, outputId: string) =>
-    useOutput(outputId, id, flowName)[1](output);
+  const setOutput = useOutput("output1", id, flowName)[1];
 
   console.log("CustomNodeComponent", id, inputs, outputs);
 
   const onClickButton = () => {
     console.log("onClickButton", outputs);
     const newOutput = (outputs.output1 ?? "") + "!";
-    setOutput(newOutput, "output1");
+    setOutput(newOutput);
   };
   return (
     <div>

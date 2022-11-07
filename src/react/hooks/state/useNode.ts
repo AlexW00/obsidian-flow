@@ -9,6 +9,6 @@ export const useNode = (
   flowName: string
 ): Node<CustomNodeData> | undefined => {
   return useAppModel((store) =>
-    selectNode(nodeId, selectFlow(flowName, store)?.editorModel)
+    selectNode(nodeId, selectFlow(flowName, store)?.editorModel.nodes)
   );
 };

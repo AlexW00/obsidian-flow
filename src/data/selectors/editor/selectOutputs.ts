@@ -6,6 +6,6 @@ export const selectOutputs = (
   nodeId: string,
   editor: EditorModel
 ): Outputs | undefined => {
-  const node = selectNode(nodeId, editor);
+  const node = selectNode(nodeId, editor.nodes);
   return node?.data?.outputs;
 };

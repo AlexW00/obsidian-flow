@@ -11,15 +11,14 @@ export const useOutputs = (
   nodeId: string,
   flowName: string
 ): MutableHookResult<OutputData> => {
-  return [
-    useAppModel((store) =>
+  const outputs = useAppModel((store) =>
       selectOutputs(nodeId, selectFlow(flowName, store)?.editorModel)
     ),
-    (outputs: Outputs) =>
+    setter = (outputs: Outputs) =>
       useAppModel.setState(
         produce((draft: AppModel) => {
           setOutputs(outputs, nodeId, flowName, draft);
         })
-      ),
-  ];
+      );
+  return [outputs, setter];
 };

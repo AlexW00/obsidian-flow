@@ -20,7 +20,7 @@ export const selectConnectedNodes = (
       // get the nodes connected to the edges
       .map((e) => {
         return {
-          node: selectNode(isTarget ? e.source : e.target, editorModel),
+          node: selectNode(isTarget ? e.source : e.target, editorModel.nodes),
           connectedOn: isTarget ? e.sourceHandle : e.targetHandle,
         };
       })

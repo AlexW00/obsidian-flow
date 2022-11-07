@@ -10,12 +10,13 @@ import produce from "immer";
 export const useNodes = (
   flowName: string
 ): MutableHookResult<Node<CustomNodeData>[]> => {
-  return [
-    useAppModel((store) => selectFlow(flowName, store)?.editorModel.nodes),
-    (nodes: Node<CustomNodeData>[]) => {
+  const nodes = useAppModel(
+      (store) => selectFlow(flowName, store)?.editorModel.nodes
+    ),
+    setter = (nodes: Node<CustomNodeData>[]) => {
       useAppModel.setState(
         produce((draft) => setNodes(nodes, flowName, draft))
       );
-    },
-  ];
+    };
+  return [nodes, setter];
 };
