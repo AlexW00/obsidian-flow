@@ -14,12 +14,11 @@ export const setEdges = (
   // delete edges that are not in the new list
   editorModel.edges
     // find them
-    ?.map((oldEdge) => {
-      if (edges.indexOf(oldEdge) === -1)
-        return () => deleteEdge(oldEdge, editorModel);
-    })
-    // delete them
-    .forEach((deleteEdge) => deleteEdge && deleteEdge());
+    ?.filter((oldEdge) => edges.indexOf(oldEdge) === -1)
+    // create delete actions
+    .map((edgeToDelete) => () => deleteEdge(edgeToDelete, editorModel))
+    // execute delete actions
+    .forEach((deleteEdge) => deleteEdge());
 
   // add all new edges
   edges.forEach((edge) => addEdge(edge, editorModel));

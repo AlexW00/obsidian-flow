@@ -7,24 +7,26 @@ export const deleteEdge = (edge: Edge, editorModel: EditorModel): void => {
   if (index !== -1) {
     editorModel.edges.splice(index, 1);
 
-    // update the input of the target node
-    const targetNode = selectNode(edge.target, editorModel?.nodes);
-    const alternativeEdges = editorModel.edges.filter(
-      (e) => e.target === edge.target && e.targetHandle === edge.targetHandle
-    );
-    // if there are no more edges connected to this handle, set the input to null
-    if (targetNode && alternativeEdges.length === 0)
-      targetNode.data.inputs[edge.targetHandle] = undefined;
-    else {
-      // otherwise, set the input to the output of the first edge
-      const connectedNode = selectNode(
-        alternativeEdges[0].source,
-        editorModel?.nodes
+    if (edge.targetHandle) {
+      // update the input of the target node
+      const targetNode = selectNode(edge.target, editorModel?.nodes);
+      const alternativeEdges = editorModel.edges.filter(
+        (e) => e.target === edge.target && e.targetHandle === edge.targetHandle
       );
-      const connectedHandle =
-        connectedNode?.data?.definition?.io?.outputs[edge.sourceHandle];
-      if (targetNode && connectedHandle)
-        targetNode.data.inputs[edge.targetHandle] = connectedHandle;
+      // if there are no more edges connected to this handle, set the input to null
+      if (targetNode && alternativeEdges.length === 0)
+        targetNode.data.inputs[edge.targetHandle] = undefined;
+      else {
+        // otherwise, set the input to the output of the first edge
+        const connectedNode = selectNode(
+          alternativeEdges[0].source,
+          editorModel?.nodes
+        );
+        const connectedHandle =
+          connectedNode?.data?.definition?.io?.outputs[edge.sourceHandle];
+        if (targetNode && connectedHandle)
+          targetNode.data.inputs[edge.targetHandle] = connectedHandle;
+      }
     }
   }
 };
