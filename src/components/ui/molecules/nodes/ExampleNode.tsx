@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { NumberHandle } from "src/classes/nodes/definition/io/handles/types/base/NumberHandle";
+
 import { ObjectHandle } from "src/classes/nodes/definition/io/handles/types/base/ObjectHandle";
 import { StringHandle } from "src/classes/nodes/definition/io/handles/types/base/StringHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
 import { FlowNameContext } from "src/react/contexts/FlowContext";
 import { useInputs } from "src/react/hooks/state/useInputs";
 import { useNodeDefinition } from "src/react/hooks/state/useNodeDefinition";
+import { useNodeHandleType } from "src/react/hooks/state/useNodeHandleType";
 import { useOutput } from "src/react/hooks/state/useOutput";
 import { useOutputs } from "src/react/hooks/state/useOutputs";
 
@@ -21,6 +23,18 @@ export const ExampleNodeComponent = (id: string) => {
   const inputs = useInputs(id, flowName);
   const [outputs] = useOutputs(id, flowName);
   const setOutput = useOutput("output1", id, flowName)[1];
+  const setInput2HandleType = useNodeHandleType(
+    true,
+    "input2",
+    id,
+    flowName
+  )[1];
+  const setOutput2HandleType = useNodeHandleType(
+    false,
+    "output2",
+    id,
+    flowName
+  )[1];
 
   console.log("CustomNodeComponent", id, inputs, outputs);
 
@@ -29,12 +43,19 @@ export const ExampleNodeComponent = (id: string) => {
     const newOutput = (outputs.output1 ?? "") + "!";
     setOutput(newOutput);
   };
+
+  const changeOutputType = () => {
+    setInput2HandleType(NumberHandle);
+    setOutput2HandleType(NumberHandle);
+  };
+
   return (
     <div>
       <h3>MyCustomNode</h3>
       <div>Input: {inputs?.input1 ?? "empty"}</div>
       <div>Output: {outputs?.output1 ?? "empty"}</div>
       <button onClick={onClickButton}>Increment</button>
+      <button onClick={changeOutputType}>Change output type</button>
     </div>
   );
 };
@@ -48,7 +69,7 @@ export const ExampleNode: CustomNodeDefinition = {
       },
       input2: {
         name: "Input 2",
-        type: NumberHandle,
+        type: ObjectHandle,
       },
     },
     outputs: {

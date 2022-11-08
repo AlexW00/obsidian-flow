@@ -25,7 +25,12 @@ const nodes = [
     type: "custom",
     data: {
       component: ExampleNodeComponent,
-      definition: {},
+      definition: {
+        io: {
+          inputs: {},
+          outputs: {},
+        },
+      },
       outputs: {},
       inputs: {},
     },
@@ -36,7 +41,12 @@ const nodes = [
     type: "custom",
     data: {
       component: ExampleNodeComponent,
-      definition: {},
+      definition: {
+        io: {
+          inputs: {},
+          outputs: {},
+        },
+      },
       outputs: {},
       inputs: {},
     },
