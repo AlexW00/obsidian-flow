@@ -52,6 +52,7 @@ export const Editor = () => {
       }}
       onEdgesChange={(edgeChanges) => {
         const newEdges = applyEdgeChanges(edgeChanges, edges);
+        console.log("newEdges", newEdges);
         setEdges(newEdges);
       }}
       onConnect={handleConnect}

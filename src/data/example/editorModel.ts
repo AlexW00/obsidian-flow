@@ -52,6 +52,22 @@ const nodes = [
     },
     position: { x: 300, y: 300 },
   },
+  {
+    id: "6",
+    type: "custom",
+    data: {
+      component: ExampleNodeComponent,
+      definition: {
+        io: {
+          inputs: {},
+          outputs: {},
+        },
+      },
+      outputs: {},
+      inputs: {},
+    },
+    position: { x: 600, y: 200 },
+  },
 ] as Node[];
 
 const edges = [
