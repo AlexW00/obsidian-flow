@@ -1,20 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { NumberHandle } from "src/classes/nodes/definition/io/handles/types/base/NumberHandle";
 import { ObjectHandle } from "src/classes/nodes/definition/io/handles/types/base/ObjectHandle";
 import { StringHandle } from "src/classes/nodes/definition/io/handles/types/base/StringHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
 import { FlowNameContext } from "src/react/contexts/FlowContext";
 import { useInputs } from "src/react/hooks/state/useInputs";
+import { useNodeDefinition } from "src/react/hooks/state/useNodeDefinition";
 import { useOutput } from "src/react/hooks/state/useOutput";
 import { useOutputs } from "src/react/hooks/state/useOutputs";
 
-export const CustomNodeComponent = (id: string) => {
+export const ExampleNodeComponent = (id: string) => {
   const flowName = useContext(FlowNameContext);
   console.log("Rendering CustomNodeComponent in flow named", flowName);
 
+  const setNodeDefinition = useNodeDefinition(id, flowName)[1];
+  useEffect(() => {
+    setNodeDefinition(ExampleNode);
+  }, []);
+
   const inputs = useInputs(id, flowName);
   const [outputs] = useOutputs(id, flowName);
-
   const setOutput = useOutput("output1", id, flowName)[1];
 
   console.log("CustomNodeComponent", id, inputs, outputs);
@@ -57,5 +62,4 @@ export const ExampleNode: CustomNodeDefinition = {
       },
     },
   },
-  content: (_io, id) => CustomNodeComponent(id),
 };

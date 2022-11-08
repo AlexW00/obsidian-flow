@@ -1,57 +1,26 @@
 import React, { FunctionComponent, PropsWithChildren, useEffect } from "react";
-import { Handle, NodeProps, Position, useUpdateNodeInternals } from "reactflow";
+import { NodeProps, useUpdateNodeInternals } from "reactflow";
 import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
-import { NodeHandles } from "src/classes/nodes/definition/io/handles/NodeHandles";
+import { CustomNodeHandles } from "./CustomNodeHandles";
 
 export const CustomNodeComponent: FunctionComponent<
-	NodeProps<CustomNodeData>
+  NodeProps<CustomNodeData>
 > = (props: PropsWithChildren<NodeProps<CustomNodeData>>, _context?: any) => {
-	console.log("rendering CustomNodeComponent", props.id);
-	const calculateHandleTopOffset = (
-		index: number,
-		numHandles: number
-	): string => {
-		const offset = 100 / (numHandles + 1);
-		return `${offset * (index + 1)}%`;
-	};
+  console.log("rendering CustomNodeComponent", props.id);
+  const updateNodeInternals = useUpdateNodeInternals();
 
-	const mapHandles = (io: NodeHandles, isInput: boolean): JSX.Element[] => {
-		const keys = Object.keys(io);
+  useEffect(() => {
+    updateNodeInternals(props.id);
+  }, []);
 
-		const updateNodeInternals = useUpdateNodeInternals();
-
-		// first execute
-		useEffect(() => {
-			updateNodeInternals(props.id);
-		}, []);
-
-		return keys.map((key, index) => {
-			const handleTopOffset = calculateHandleTopOffset(index, keys.length);
-			const type = io[key].type;
-			return (
-				<Handle
-					key={key}
-					id={key}
-					type={isInput ? "target" : "source"}
-					position={isInput ? Position.Left : Position.Right}
-					style={{
-						top: handleTopOffset,
-						background: type.color,
-					}}
-				/>
-			);
-		});
-	};
-
-	return (
-		<div className="custom-node react-flow__node-default">
-			{mapHandles(props.data.definition.io.inputs, true)}
-
-			<div>
-				{props.data.definition.content(props.data.definition.io, props.id)}
-			</div>
-
-			{mapHandles(props.data.definition.io.outputs, false)}
-		</div>
-	);
+  // rendering content first because
+  // at first render, the definition of the handles gets initialized
+  const content = props.data.component(props.id);
+  return (
+    <div className="custom-node react-flow__node-default">
+      <CustomNodeHandles nodeId={props.id} isInput={true} />
+      <div>{content}</div>
+      <CustomNodeHandles nodeId={props.id} isInput={false} />
+    </div>
+  );
 };

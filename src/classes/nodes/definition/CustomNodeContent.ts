@@ -1,3 +1,1 @@
-import { NodeIO } from "./io/NodeIO";
-
-export type CustomNodeContent = (io: NodeIO, id: string) => JSX.Element;
+export type CustomNodeComponent = (id: string) => JSX.Element;
