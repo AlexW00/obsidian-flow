@@ -3,6 +3,7 @@ import EditorModel from "src/data/models/EditorModel";
 import { selectNode } from "src/data/selectors/editor/selectNode";
 
 export const deleteEdge = (edge: Edge, editorModel: EditorModel): void => {
+  console.log("deleteEdge", edge);
   const index = editorModel.edges.findIndex((e) => e.id === edge.id);
   if (index !== -1) {
     editorModel.edges.splice(index, 1);

@@ -2,17 +2,13 @@ import React from "react";
 import { useContext } from "react";
 import { Handle, Position } from "reactflow";
 import { NodeHandles } from "src/classes/nodes/definition/io/handles/NodeHandles";
-import { FlowNameContext } from "src/react/contexts/FlowContext";
+import { FlowNameContext } from "src/react/contexts/FlowNameContext";
+import { NodeIdContext } from "src/react/contexts/NodeIdContext";
 import { useNodeHandles } from "src/react/hooks/state/useNodeHandles";
 
-export const CustomNodeHandles = ({
-  nodeId,
-  isInput,
-}: {
-  nodeId: string;
-  isInput: boolean;
-}) => {
+export const CustomNodeHandles = ({ isInput }: { isInput: boolean }) => {
   const flowName = useContext(FlowNameContext);
+  const nodeId = useContext(NodeIdContext);
   const [nodeHandles] = useNodeHandles(isInput, nodeId, flowName);
 
   const calculateHandleTopOffset = (

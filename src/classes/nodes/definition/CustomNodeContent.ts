@@ -1,1 +1,3 @@
-export type CustomNodeComponent = (id: string) => JSX.Element;
+import { FunctionComponent } from "react";
+
+export type CustomNodeComponent = FunctionComponent;

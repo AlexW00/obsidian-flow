@@ -1,11 +1,9 @@
 import useAppModel from "src/data/store";
-import produce from "immer";
-import AppModel from "src/data/models/AppModel";
 import { selectFlow } from "src/data/selectors/app/selectFlow";
 import { MutableHookResult } from "src/classes/react/StateHookResult";
 import { selectNode } from "src/data/selectors/editor/selectNode";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
-import { setNodeDefinition } from "src/data/setters/editor/setNodeDefinition";
+import { useSetNodeDefinition } from "./useSetNodeDefinition";
 
 export const useNodeDefinition = (
   nodeId: string,
@@ -17,11 +15,6 @@ export const useNodeDefinition = (
       const definition = node?.data.definition;
       return definition;
     }),
-    setter = (definition: CustomNodeDefinition) =>
-      useAppModel.setState(
-        produce((draft: AppModel) =>
-          setNodeDefinition(definition, nodeId, flowName, draft)
-        )
-      );
+    setter = useSetNodeDefinition(nodeId, flowName);
   return [nodeDefinition, setter];
 };

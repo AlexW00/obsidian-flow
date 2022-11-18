@@ -16,11 +16,12 @@ import { useNodes } from "src/react/hooks/state/useNodes";
 import { CustomNodeComponent } from "../molecules/nodes/CustomNode";
 
 export const Editor = () => {
-  console.log("Rendering Editor");
   const flowName = "example-flow";
   const nodeTypes = useMemo(() => ({ custom: CustomNodeComponent }), []);
   const [nodes, setNodes] = useNodes(flowName);
   const [edges, setEdges] = useEdges(flowName);
+
+  console.log("Rendering Editor with nodes:", nodes);
 
   const handleConnect = (connection: Connection) => {
     const sourceNode = selectNode(connection.source, nodes);
