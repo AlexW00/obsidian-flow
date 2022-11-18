@@ -1,7 +1,7 @@
 import { NodeHandle } from "src/classes/nodes/definition/io/handles/NodeHandle";
-import AppModel from "src/data/models/AppModel";
-import { selectFlow } from "src/data/selectors/app/selectFlow";
-import { selectNode } from "src/data/selectors/editor/selectNode";
+import AppModel from "../../models/AppModel";
+import { selectFlow } from "../../selectors/app/selectFlow";
+import { selectNode } from "../../selectors/editor/selectNode";
 import { removeIncompatibleEdges } from "./removeIncompatibleEdges";
 
 export const setNodeHandle = (

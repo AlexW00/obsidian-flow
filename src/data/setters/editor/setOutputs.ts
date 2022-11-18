@@ -1,8 +1,8 @@
 import { Outputs } from "src/classes/nodes/outputs/Outputs";
-import AppModel from "src/data/models/AppModel";
-import { selectFlow } from "src/data/selectors/app/selectFlow";
-import { selectConnectedNodes } from "src/data/selectors/editor/selectConnectedNodes";
-import { selectNode } from "src/data/selectors/editor/selectNode";
+import AppModel from "../../models/AppModel";
+import { selectFlow } from "../../selectors/app/selectFlow";
+import { selectConnectedNodes } from "../../selectors/editor/selectConnectedNodes";
+import { selectNode } from "../../selectors/editor/selectNode";
 
 export const setOutputs = (
   outputs: Outputs,
@@ -21,7 +21,8 @@ export const setOutputs = (
       nodeId,
       false,
       outputId,
-      editorModel
+      editorModel.edges,
+      editorModel.nodes
     );
     const output = outputs[outputId];
 

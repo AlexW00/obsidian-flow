@@ -1,5 +1,5 @@
-import AppModel from "src/data/models/AppModel";
-import FlowModel from "src/data/models/FlowModel";
+import AppModel from "../../models/AppModel";
+import FlowModel from "../../models/FlowModel";
 
 export const selectFlow = (
   name: string,

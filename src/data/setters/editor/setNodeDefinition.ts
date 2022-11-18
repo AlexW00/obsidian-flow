@@ -1,7 +1,7 @@
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
-import AppModel from "src/data/models/AppModel";
-import { selectFlow } from "src/data/selectors/app/selectFlow";
-import { selectNode } from "src/data/selectors/editor/selectNode";
+import AppModel from "../../models/AppModel";
+import { selectFlow } from "../../selectors/app/selectFlow";
+import { selectNode } from "../../selectors/editor/selectNode";
 
 export const setNodeDefinition = (
   definition: CustomNodeDefinition,
@@ -12,5 +12,6 @@ export const setNodeDefinition = (
   // update outputs
   const editorModel = selectFlow(flowName, appModel).editorModel;
   const node = selectNode(nodeId, editorModel.nodes);
-  if (node) node.data.definition = definition;
+
+  node.data.definition = definition;
 };

@@ -19,6 +19,7 @@
 		"obsidian": "obsidianmd/obsidian-api#master",
 		"react": "17.0.1",
 		"react-dom": "17.0.1",
+		"react-flow-renderer": "^10.3.17",
 		"reactflow": "^11.1.2",
 		"tslib": "2.1.0",
 		"zustand": "^4.1.4"

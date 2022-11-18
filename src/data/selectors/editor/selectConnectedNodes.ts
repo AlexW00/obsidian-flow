@@ -1,16 +1,16 @@
 import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
-import EditorModel from "src/data/models/EditorModel";
-import { Node } from "reactflow";
+import { Edge, Node } from "react-flow-renderer";
 import { selectNode } from "./selectNode";
 
 export const selectConnectedNodes = (
   id: string,
   isTarget: boolean,
   handleId: string,
-  editorModel: EditorModel
+  edges: Edge[],
+  nodes: Node<CustomNodeData>[]
 ): { node: Node<CustomNodeData>; connectedOn: string }[] => {
   return (
-    editorModel.edges
+    edges
       // find all edges connected to the handle
       .filter((e) =>
         isTarget
@@ -20,7 +20,7 @@ export const selectConnectedNodes = (
       // get the nodes connected to the edges
       .map((e) => {
         return {
-          node: selectNode(isTarget ? e.source : e.target, editorModel.nodes),
+          node: selectNode(isTarget ? e.source : e.target, nodes),
           connectedOn: isTarget ? e.sourceHandle : e.targetHandle,
         };
       })

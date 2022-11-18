@@ -1,5 +1,5 @@
 import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
-import { Node } from "reactflow";
+import { Node } from "react-flow-renderer";
 
 export const selectNode = (
   id: string,

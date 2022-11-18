@@ -1,27 +1,28 @@
 import React, { useMemo } from "react";
 import ReactFlow, {
-  MiniMap,
-  Controls,
   Background,
   Connection,
-  addEdge,
-  applyNodeChanges,
-  applyEdgeChanges,
-} from "reactflow";
-import "reactflow/dist/style.css";
-import { canConnect } from "src/classes/nodes/definition/io/handles/types/NodeHandleType";
+  Controls,
+  MiniMap,
+} from "react-flow-renderer";
+import { areCompatible } from "src/classes/nodes/definition/io/handles/types/NodeHandleType";
 import { selectNode } from "src/data/selectors/editor/selectNode";
-import { useEdges } from "src/react/hooks/state/useEdges";
-import { useNodes } from "src/react/hooks/state/useNodes";
-import { CustomNodeComponent } from "../molecules/nodes/CustomNode";
+import useAppModel from "src/data/store";
+import { useFlowName } from "src/react/hooks/context/useFlowName";
+import { useGetEdges } from "src/react/hooks/state/getters/useGetEdges";
+import { useGetNodes } from "src/react/hooks/state/getters/useGetNodes";
+import { CustomNodeContainer } from "../molecules/nodes/CustomNodeContainer";
 
 export const Editor = () => {
-  const flowName = "example-flow";
-  const nodeTypes = useMemo(() => ({ custom: CustomNodeComponent }), []);
-  const [nodes, setNodes] = useNodes(flowName);
-  const [edges, setEdges] = useEdges(flowName);
+  const flowName = useFlowName();
+  const nodes = useGetNodes();
+  const edges = useGetEdges();
 
-  console.log("Rendering Editor with nodes:", nodes);
+  const { onNodesChange, onEdgesChange, onConnect } = useAppModel();
+
+  const nodeTypes = useMemo(() => ({ custom: CustomNodeContainer }), []);
+
+  console.log("Rendering Editor");
 
   const handleConnect = (connection: Connection) => {
     const sourceNode = selectNode(connection.source, nodes);
@@ -33,10 +34,9 @@ export const Editor = () => {
       targetNode.data.definition.io.inputs[connection.targetHandle].type;
     if (
       sourceNode.id !== targetNode.id &&
-      canConnect(sourceHandleType, targetHandleType)
+      areCompatible(sourceHandleType, targetHandleType)
     ) {
-      const newEdges = addEdge(connection, edges);
-      setEdges(newEdges);
+      onConnect(connection, flowName);
     } else {
       console.log("Cannot connect", sourceHandleType, targetHandleType);
     }
@@ -47,15 +47,8 @@ export const Editor = () => {
       nodeTypes={nodeTypes}
       nodes={nodes}
       edges={edges}
-      onNodesChange={(nodeChanges) => {
-        const newNodes = applyNodeChanges(nodeChanges, nodes);
-        setNodes(newNodes);
-      }}
-      onEdgesChange={(edgeChanges) => {
-        const newEdges = applyEdgeChanges(edgeChanges, edges);
-        console.log("newEdges", newEdges);
-        setEdges(newEdges);
-      }}
+      onNodesChange={(nodeChanges) => onNodesChange(nodeChanges, flowName)}
+      onEdgesChange={(edgeChanges) => onEdgesChange(edgeChanges, flowName)}
       onConnect={handleConnect}
     >
       <MiniMap />

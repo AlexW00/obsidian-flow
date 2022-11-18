@@ -1,11 +1,9 @@
-import { Outputs } from "src/classes/nodes/outputs/Outputs";
-import EditorModel from "src/data/models/EditorModel";
-import { selectNode } from "./selectNode";
+import { Node } from "react-flow-renderer";
+import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
+import { Outputs } from "../../../classes/nodes/outputs/Outputs";
 
 export const selectOutputs = (
-  nodeId: string,
-  editor: EditorModel
+  node: Node<CustomNodeData>
 ): Outputs | undefined => {
-  const node = selectNode(nodeId, editor.nodes);
   return node?.data?.outputs;
 };

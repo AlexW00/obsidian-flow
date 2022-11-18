@@ -1,8 +1,8 @@
 import { OutputData } from "src/classes/nodes/outputs/Outputs";
-import AppModel from "src/data/models/AppModel";
-import { selectFlow } from "src/data/selectors/app/selectFlow";
-import { selectConnectedNodes } from "src/data/selectors/editor/selectConnectedNodes";
-import { selectNode } from "src/data/selectors/editor/selectNode";
+import AppModel from "../../models/AppModel";
+import { selectFlow } from "../../selectors/app/selectFlow";
+import { selectConnectedNodes } from "../../selectors/editor/selectConnectedNodes";
+import { selectNode } from "../../selectors/editor/selectNode";
 
 export const setOutput = (
   output: OutputData,
@@ -17,7 +17,13 @@ export const setOutput = (
   if (node) node.data.outputs[id] = output;
 
   // update inputs
-  const connectedNodes = selectConnectedNodes(nodeId, false, id, editorModel);
+  const connectedNodes = selectConnectedNodes(
+    nodeId,
+    false,
+    id,
+    editorModel.edges,
+    editorModel.nodes
+  );
 
   connectedNodes.forEach((connectedNode) => {
     connectedNode.node.data.inputs[connectedNode.connectedOn] = output;

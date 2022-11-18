@@ -1,4 +1,4 @@
-import { CustomNodeComponent } from "./definition/CustomNodeContent";
+import { CustomNodeComponent } from "./definition/CustomNodeComponent";
 import { CustomNodeDefinition } from "./definition/NodeDefinition";
 import { Inputs } from "./outputs/Inputs";
 import { Outputs } from "./outputs/Outputs";

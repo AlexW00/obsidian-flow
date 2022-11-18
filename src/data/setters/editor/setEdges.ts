@@ -1,24 +1,17 @@
-import { Edge } from "reactflow";
-import AppModel from "src/data/models/AppModel";
-import { selectFlow } from "src/data/selectors/app/selectFlow";
+import { Edge } from "react-flow-renderer";
+import EditorModel from "src/data/models/EditorModel";
 import { addEdge } from "./addEdge";
 import { deleteEdge } from "./deleteEdge";
 
-export const setEdges = (
-  edges: Edge[],
-  flowName: string,
-  appModel: AppModel
-): void => {
-  const editorModel = selectFlow(flowName, appModel)?.editorModel;
-
+export const setEdges = (edges: Edge[], editorModel: EditorModel): void => {
   // delete edges that are not in the new list
   editorModel.edges
     // find them
-    ?.filter((oldEdge) => edges.indexOf(oldEdge) === -1)
+    ?.filter((oldEdge) => edges.every((newEdge) => newEdge.id !== oldEdge.id))
     // create delete actions
     .map((edgeToDelete) => () => deleteEdge(edgeToDelete, editorModel))
     // execute delete actions
-    .forEach((deleteEdge) => deleteEdge());
+    .forEach((deleteAction) => deleteAction());
 
   // add all new edges
   edges.forEach((edge) => addEdge(edge, editorModel));

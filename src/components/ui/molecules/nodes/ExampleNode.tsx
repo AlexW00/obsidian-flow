@@ -1,54 +1,32 @@
-import React, { useContext, useEffect } from "react";
-import { NumberHandle } from "src/classes/nodes/definition/io/handles/types/base/NumberHandle";
-
+import React, { useEffect } from "react";
+import { CustomNodeComponentProps } from "src/classes/nodes/definition/CustomNodeComponent";
 import { ObjectHandle } from "src/classes/nodes/definition/io/handles/types/base/ObjectHandle";
 import { StringHandle } from "src/classes/nodes/definition/io/handles/types/base/StringHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
-import { FlowNameContext } from "src/react/contexts/FlowNameContext";
-import { NodeIdContext } from "src/react/contexts/NodeIdContext";
-import { useInputs } from "src/react/hooks/state/useInputs";
-import { useNodeDefinition } from "src/react/hooks/state/useNodeDefinition";
-import { useNodeHandleType } from "src/react/hooks/state/useNodeHandleType";
-import { useOutput } from "src/react/hooks/state/useOutput";
-import { useOutputs } from "src/react/hooks/state/useOutputs";
+import { useNodeId } from "src/react/hooks/context/useNodeId";
+import { useSetDefinition } from "src/react/hooks/state/setters/useSetDefinition";
+import { useSetOutput } from "src/react/hooks/state/setters/useSetOutput";
 
-export const ExampleNodeComponent = () => {
-  const flowName = useContext(FlowNameContext);
-  const id = useContext(NodeIdContext);
-  console.log("Rendering " + id + " in flow named", flowName);
+export const ExampleNodeComponent = ({
+  inputs,
+  outputs,
+}: CustomNodeComponentProps) => {
+  const id = useNodeId();
+  console.log("Rendering Example Node with id" + id);
 
-  const setNodeDefinition = useNodeDefinition(id, flowName)[1];
+  const setNodeDefinition = useSetDefinition();
+  const setNodeOutput1 = useSetOutput("output1");
+
   useEffect(() => {
     setNodeDefinition(ExampleNode);
   }, []);
 
-  const inputs = useInputs(id, flowName);
-  const [outputs] = useOutputs(id, flowName);
-  const setOutput = useOutput("output1", id, flowName)[1];
-  const setInput2HandleType = useNodeHandleType(
-    true,
-    "input2",
-    id,
-    flowName
-  )[1];
-  const setOutput2HandleType = useNodeHandleType(
-    false,
-    "output2",
-    id,
-    flowName
-  )[1];
-
-  console.log("CustomNodeComponent", id, inputs, outputs);
-
   const onClickButton = () => {
-    console.log("onClickButton", outputs);
-    const newOutput = (outputs.output1 ?? "") + "!";
-    setOutput(newOutput);
+    setNodeOutput1(outputs.output1 + "!");
   };
 
   const changeOutputType = () => {
-    setInput2HandleType(NumberHandle);
-    setOutput2HandleType(NumberHandle);
+    console.log("changeOutputType");
   };
 
   return (

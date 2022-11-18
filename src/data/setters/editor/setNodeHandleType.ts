@@ -1,5 +1,5 @@
 import NodeHandleType from "src/classes/nodes/definition/io/handles/types/NodeHandleType";
-import AppModel from "src/data/models/AppModel";
+import AppModel from "../../models/AppModel";
 import { setNodeHandle } from "./setNodeHandle";
 
 export const setNodeHandleType = (

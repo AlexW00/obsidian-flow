@@ -1,7 +1,7 @@
-import { NodeHandle } from "src/classes/nodes/definition/io/handles/NodeHandle";
-import { canConnect } from "src/classes/nodes/definition/io/handles/types/NodeHandleType";
-import EditorModel from "src/data/models/EditorModel";
-import { selectNode } from "src/data/selectors/editor/selectNode";
+import { NodeHandle } from "../../../classes/nodes/definition/io/handles/NodeHandle";
+import { areCompatible } from "../../../classes/nodes/definition/io/handles/types/NodeHandleType";
+import EditorModel from "../../models/EditorModel";
+import { selectNode } from "../../selectors/editor/selectNode";
 
 export const removeIncompatibleEdges = (
   isInput: boolean,
@@ -34,7 +34,7 @@ export const removeIncompatibleEdges = (
     const connectedHandle = io?.[handleName];
 
     // if the handle has an incompatible type now,
-    if (connectedHandle && !canConnect(handle, connectedHandle)) {
+    if (connectedHandle && !areCompatible(handle, connectedHandle)) {
       // remove the edge
       editorModel.edges = editorModel.edges.filter((e) => e.id !== edge.id);
     }

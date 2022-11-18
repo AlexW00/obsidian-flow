@@ -1,6 +1,6 @@
-import AppModel from "src/data/models/AppModel";
-import FlowModel from "src/data/models/FlowModel";
-import { findFlowIndex } from "src/data/selectors/app/findFlowIndex";
+import AppModel from "../../models/AppModel";
+import FlowModel from "../../models/FlowModel";
+import { findFlowIndex } from "../../selectors/app/findFlowIndex";
 
 export const setFlow = (flow: FlowModel, appModel: AppModel) => {
   const flowIndex = findFlowIndex(flow.name, appModel);

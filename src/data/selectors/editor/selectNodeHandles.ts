@@ -1,16 +1,12 @@
-import { NodeHandles } from "src/classes/nodes/definition/io/handles/NodeHandles";
-import AppModel from "src/data/models/AppModel";
-import { selectFlow } from "../app/selectFlow";
-import { selectNode } from "./selectNode";
+import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
+import { NodeHandles } from "../../../classes/nodes/definition/io/handles/NodeHandles";
+
+import { Node } from "react-flow-renderer";
 
 export const selectNodeHandles = (
   isInput: boolean,
-  nodeId: string,
-  flowName: string,
-  appModel: AppModel
+  node: Node<CustomNodeData>
 ): NodeHandles => {
-  const nodes = selectFlow(flowName, appModel)?.editorModel.nodes;
-  const node = selectNode(nodeId, nodes);
   const definition = node?.data?.definition;
   const handles = isInput ? definition?.io?.inputs : definition?.io?.outputs;
   return handles;

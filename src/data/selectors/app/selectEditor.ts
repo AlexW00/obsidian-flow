@@ -1,5 +1,5 @@
-import AppModel from "src/data/models/AppModel";
-import EditorModel from "src/data/models/EditorModel";
+import AppModel from "../../models/AppModel";
+import EditorModel from "../../models/EditorModel";
 
 export const selectEditor = (
   flowName: string,
