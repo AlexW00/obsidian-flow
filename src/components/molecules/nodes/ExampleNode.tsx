@@ -33,7 +33,7 @@ export const ExampleNodeComponent = ({
       <h3>Example Node</h3>
       <div>Input: {inputs?.input?.toString()}</div>
       <div>Output: {outputs?.output}</div>
-      <button onClick={onClickButton}>Increment</button>
+      <button onClick={onClickButton}>Add "!"</button>
     </div>
   );
 };
@@ -42,13 +42,13 @@ export const ExampleNodeDefinition: CustomNodeDefinition = {
   io: {
     inputs: {
       input: {
-        name: "Input",
+        description: "Input",
         type: AnyHandle,
       },
     },
     outputs: {
       output: {
-        name: "Output",
+        description: "Output",
         type: AnyHandle,
       },
     },

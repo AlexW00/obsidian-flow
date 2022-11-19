@@ -1,7 +1,9 @@
-.DiceRoller__container {
-	display: flex;
+.npm__react-simple-code-editor__textarea {
+  border-radius: 0px !important;
+  box-shadow: none !important;
 }
 
-.DiceRoller__container input {
-	width: 60px;
+.code-font {
+  font-family: '"Fira code", "Fira Mono", monospace';
+  font-size: 0.8rem;
 }

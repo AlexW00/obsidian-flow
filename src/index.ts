@@ -1,5 +1,6 @@
 import { Plugin } from "obsidian";
 import FlowLeaf from "./components/pages/FlowLeaf";
+import "./styles.css";
 
 export default class ReactStarterPlugin extends Plugin {
   async onload(): Promise<void> {
