@@ -31,7 +31,7 @@ export const ExampleNodeComponent = ({
 
   return (
     <div>
-      <h3>MyCustomNode</h3>
+      <h3>Example Node</h3>
       <div>Input: {inputs?.input1 ?? "empty"}</div>
       <div>Output: {outputs?.output1 ?? "empty"}</div>
       <button onClick={onClickButton}>Increment</button>
