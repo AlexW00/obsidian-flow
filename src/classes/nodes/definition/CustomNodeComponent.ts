@@ -9,4 +9,5 @@ export type CustomNodeComponentProps = {
   definition: CustomNodeDefinition;
   outputs: Outputs;
   inputs: Inputs;
+  data: any;
 };

@@ -11,7 +11,7 @@ import useAppModel from "src/data/store";
 import { useFlowName } from "src/react/hooks/context/useFlowName";
 import { useGetEdges } from "src/react/hooks/state/getters/useGetEdges";
 import { useGetNodes } from "src/react/hooks/state/getters/useGetNodes";
-import { NodeComponent } from "../molecules/NodeComponent";
+import { NodeComponent } from "../molecules/Node";
 
 export const Editor = () => {
   const flowName = useFlowName();

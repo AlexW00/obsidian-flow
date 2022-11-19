@@ -1,5 +1,6 @@
 import { Edge, Node } from "react-flow-renderer";
-import { ExampleNodeComponent } from "src/components/molecules/nodes/ExampleNodeComponent";
+import { FunctionNodeComponent } from "src/components/molecules/nodes/FunctionNode";
+import { ExampleNodeComponent } from "src/components/molecules/nodes/ExampleNode";
 import EditorModel from "../models/EditorModel";
 
 const nodes = [
@@ -16,6 +17,7 @@ const nodes = [
       },
       outputs: {},
       inputs: {},
+      data: {},
     },
     position: { x: 400, y: 400 },
   },
@@ -32,6 +34,7 @@ const nodes = [
       },
       outputs: {},
       inputs: {},
+      data: {},
     },
     position: { x: 300, y: 300 },
   },
@@ -39,7 +42,7 @@ const nodes = [
     id: "3",
     type: "custom",
     data: {
-      component: ExampleNodeComponent,
+      component: FunctionNodeComponent,
       definition: {
         io: {
           inputs: {},
@@ -48,8 +51,26 @@ const nodes = [
       },
       outputs: {},
       inputs: {},
+      data: {},
     },
-    position: { x: 600, y: 200 },
+    position: { x: 0, y: 0 },
+  },
+  {
+    id: "4",
+    type: "custom",
+    data: {
+      component: FunctionNodeComponent,
+      definition: {
+        io: {
+          inputs: {},
+          outputs: {},
+        },
+      },
+      outputs: {},
+      inputs: {},
+      data: {},
+    },
+    position: { x: 0, y: 200 },
   },
 ] as Node[];
 

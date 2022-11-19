@@ -8,4 +8,5 @@ export interface CustomNodeData {
   definition: CustomNodeDefinition;
   outputs: Outputs;
   inputs: Inputs;
+  data: any;
 }

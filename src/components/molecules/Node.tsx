@@ -3,7 +3,7 @@ import { NodeProps } from "react-flow-renderer";
 import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
 import { NodeIdContext } from "src/react/contexts/NodeIdContext";
 import { wrapContent } from "src/styles/layout";
-import { HandlesComponent } from "./HandlesComponent";
+import { HandlesComponent } from "./Handles";
 
 export const NodeComponent: FunctionComponent<NodeProps<CustomNodeData>> = (
   props: PropsWithChildren<NodeProps<CustomNodeData>>,
@@ -22,6 +22,7 @@ export const NodeComponent: FunctionComponent<NodeProps<CustomNodeData>> = (
           outputs={props.data.outputs}
           inputs={props.data.inputs}
           definition={props.data.definition}
+          data={props.data.data}
         />
         <HandlesComponent
           isInput={false}

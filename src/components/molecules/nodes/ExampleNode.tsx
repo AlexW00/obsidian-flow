@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { CustomNodeComponentProps } from "src/classes/nodes/definition/CustomNodeComponent";
-import { StringHandle } from "src/classes/nodes/definition/io/handles/types/base/StringHandle";
+import { AnyHandle } from "src/classes/nodes/definition/io/handles/types/base/AnyHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
 import { useNodeId } from "src/react/hooks/context/useNodeId";
 import { useSetDefinition } from "src/react/hooks/state/setters/useSetDefinition";
@@ -31,7 +31,7 @@ export const ExampleNodeComponent = ({
   return (
     <div>
       <h3>Example Node</h3>
-      <div>Input: {inputs?.input}</div>
+      <div>Input: {inputs?.input?.toString()}</div>
       <div>Output: {outputs?.output}</div>
       <button onClick={onClickButton}>Increment</button>
     </div>
@@ -43,13 +43,13 @@ export const ExampleNodeDefinition: CustomNodeDefinition = {
     inputs: {
       input: {
         name: "Input",
-        type: StringHandle,
+        type: AnyHandle,
       },
     },
     outputs: {
       output: {
         name: "Output",
-        type: StringHandle,
+        type: AnyHandle,
       },
     },
   },
