@@ -11,7 +11,7 @@ import useAppModel from "src/data/store";
 import { useFlowName } from "src/react/hooks/context/useFlowName";
 import { useGetEdges } from "src/react/hooks/state/getters/useGetEdges";
 import { useGetNodes } from "src/react/hooks/state/getters/useGetNodes";
-import { CustomNodeContainer } from "../molecules/nodes/CustomNodeContainer";
+import { NodeComponent } from "../molecules/NodeComponent";
 
 export const Editor = () => {
   const flowName = useFlowName();
@@ -20,7 +20,7 @@ export const Editor = () => {
 
   const { onNodesChange, onEdgesChange, onConnect } = useAppModel();
 
-  const nodeTypes = useMemo(() => ({ custom: CustomNodeContainer }), []);
+  const nodeTypes = useMemo(() => ({ custom: NodeComponent }), []);
 
   console.log("Rendering Editor");
 
