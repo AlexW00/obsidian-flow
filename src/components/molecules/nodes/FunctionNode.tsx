@@ -5,6 +5,7 @@ import { CustomNodeComponentProps } from "src/classes/nodes/definition/CustomNod
 import { NodeHandles } from "src/classes/nodes/definition/io/handles/NodeHandles";
 import { AnyHandle } from "src/classes/nodes/definition/io/handles/types/base/AnyHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
+import { DynamicInputComponent } from "src/components/atoms/DynamicInput";
 import { useNodeId } from "src/react/hooks/context/useNodeId";
 import { useSetData } from "src/react/hooks/state/setters/useSetData";
 import { useSetDefinition } from "src/react/hooks/state/setters/useSetDefinition";
@@ -52,8 +53,8 @@ export const FunctionNodeComponent = ({
     setData({ code: newCode });
   };
 
-  const onFunctionParamsChanged = (newParams: string) => {
-    const params: string[] = newParams
+  const onFunctionParamsChanged = () => {
+    const params: string[] = paramInput
         .split(",")
         .map((param) => param.trim())
         .filter((param) => param.length > 0),
@@ -91,22 +92,10 @@ export const FunctionNodeComponent = ({
         >
           <div style={{ flexDirection: "row", display: "flex" }}>
             <div className="code-font">{"("}</div>
-            <input
-              className="code-font nodrag"
-              style={{
-                border: "none",
-                outline: "none",
-                cursor: "text",
-                padding: "0",
-                display: "flex",
-                alignItems: "center",
-                fontSize: "inherit",
-                fontFamily: "inherit",
-                lineHeight: "inherit",
-              }}
-              onBlur={() => onFunctionParamsChanged(paramInput)}
+            <DynamicInputComponent
+              onBlur={onFunctionParamsChanged}
               value={paramInput}
-              onChange={(e) => setParamInput(e.target.value)}
+              onChange={setParamInput}
             />
             <div className="code-font">{") => {"}</div>
           </div>
