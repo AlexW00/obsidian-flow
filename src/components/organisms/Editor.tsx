@@ -50,6 +50,8 @@ export const Editor = () => {
       onNodesChange={(nodeChanges) => onNodesChange(nodeChanges, flowName)}
       onEdgesChange={(edgeChanges) => onEdgesChange(edgeChanges, flowName)}
       onConnect={handleConnect}
+      fitView
+      snapToGrid
     >
       <MiniMap />
       <Controls />
