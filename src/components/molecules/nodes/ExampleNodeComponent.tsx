@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { CustomNodeComponentProps } from "src/classes/nodes/definition/CustomNodeComponent";
-import { ObjectHandle } from "src/classes/nodes/definition/io/handles/types/base/ObjectHandle";
 import { StringHandle } from "src/classes/nodes/definition/io/handles/types/base/StringHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
 import { useNodeId } from "src/react/hooks/context/useNodeId";
@@ -15,51 +14,42 @@ export const ExampleNodeComponent = ({
   console.log("Rendering Example Node with id" + id);
 
   const setNodeDefinition = useSetDefinition();
-  const setNodeOutput1 = useSetOutput("output1");
+  const setOutput = useSetOutput("output");
 
   useEffect(() => {
-    setNodeDefinition(ExampleNode);
+    // Here we set the definition of the node
+    // = inputs/outputs and their types
+    setNodeDefinition(ExampleNodeDefinition);
   }, []);
 
   const onClickButton = () => {
-    setNodeOutput1(outputs.output1 + "!");
-  };
-
-  const changeOutputType = () => {
-    console.log("changeOutputType");
+    // Update the output of this node
+    const newOutput = (outputs.output ?? "") + "!";
+    setOutput(newOutput);
   };
 
   return (
     <div>
       <h3>Example Node</h3>
-      <div>Input: {inputs?.input1 ?? "empty"}</div>
-      <div>Output: {outputs?.output1 ?? "empty"}</div>
+      <div>Input: {inputs?.input}</div>
+      <div>Output: {outputs?.output}</div>
       <button onClick={onClickButton}>Increment</button>
-      <button onClick={changeOutputType}>Change output type</button>
     </div>
   );
 };
 
-export const ExampleNode: CustomNodeDefinition = {
+export const ExampleNodeDefinition: CustomNodeDefinition = {
   io: {
     inputs: {
-      input1: {
-        name: "Input 1",
+      input: {
+        name: "Input",
         type: StringHandle,
-      },
-      input2: {
-        name: "Input 2",
-        type: ObjectHandle,
       },
     },
     outputs: {
-      output1: {
-        name: "Output 1",
+      output: {
+        name: "Output",
         type: StringHandle,
-      },
-      output2: {
-        name: "Output 2",
-        type: ObjectHandle,
       },
     },
   },
