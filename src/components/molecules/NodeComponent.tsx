@@ -1,5 +1,5 @@
-import React, { FunctionComponent, PropsWithChildren, useEffect } from "react";
-import { NodeProps, useUpdateNodeInternals } from "react-flow-renderer";
+import React, { FunctionComponent, PropsWithChildren } from "react";
+import { NodeProps } from "react-flow-renderer";
 import { CustomNodeData } from "src/classes/nodes/CustomNodeData";
 import { NodeIdContext } from "src/react/contexts/NodeIdContext";
 import { HandlesComponent } from "./HandlesComponent";
@@ -8,12 +8,6 @@ export const NodeComponent: FunctionComponent<NodeProps<CustomNodeData>> = (
   props: PropsWithChildren<NodeProps<CustomNodeData>>,
   _context?: any
 ) => {
-  const updateNodeInternals = useUpdateNodeInternals();
-
-  useEffect(() => {
-    updateNodeInternals(props.id);
-  }, []);
-
   const CustomNodeComponent = props.data.component;
 
   return (
