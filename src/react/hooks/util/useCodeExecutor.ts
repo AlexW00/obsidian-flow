@@ -1,12 +1,12 @@
 export const useCodeExecutor = (...paramNames: string[]): CodeExecutor => {
-  return (code: string, ...params: any[]) => {
+  return async (code: string, ...params: any[]) => {
     try {
-      const codeExecutor = new Function(...paramNames, code);
-      const result = codeExecutor(...params);
-      console.log("executed codeExecutor success");
-      return {
-        value: result,
-      };
+      const AsyncFunction = Object.getPrototypeOf(
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        async function () {}
+      ).constructor;
+      const codeExecutor = new AsyncFunction(...paramNames, code);
+      return codeExecutor(...params);
     } catch (error) {
       console.log("executed codeExecutor error");
       return { error };
@@ -17,7 +17,7 @@ export const useCodeExecutor = (...paramNames: string[]): CodeExecutor => {
 export type CodeExecutor = (
   code: string,
   ...params: any[]
-) => CodeExecutionResult;
+) => Promise<CodeExecutionResult>;
 
 export type CodeExecutionResult = {
   value?: any;

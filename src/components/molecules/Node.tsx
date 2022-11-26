@@ -18,12 +18,16 @@ export const NodeComponent: FunctionComponent<NodeProps<CustomNodeData>> = (
           isInput={true}
           handles={props.data.definition.io.inputs}
         />
-        <CustomNodeComponent
-          outputs={props.data.outputs}
-          inputs={props.data.inputs}
-          definition={props.data.definition}
-          data={props.data.data}
-        />
+        <div style={wrapContent}>
+          <h3>{props.data.definition.name}</h3>
+          <CustomNodeComponent
+            outputs={props.data.outputs}
+            inputs={props.data.inputs}
+            definition={props.data.definition}
+            data={props.data.data}
+          />
+        </div>
+
         <HandlesComponent
           isInput={false}
           handles={props.data.definition.io.outputs}

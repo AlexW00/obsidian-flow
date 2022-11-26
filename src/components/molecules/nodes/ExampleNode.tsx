@@ -30,7 +30,6 @@ export const ExampleNodeComponent = ({
 
   return (
     <div>
-      <h3>Example Node</h3>
       <div>Input: {inputs?.input?.toString()}</div>
       <div>Output: {outputs?.output}</div>
       <button onClick={onClickButton}>Add "!"</button>
@@ -39,6 +38,7 @@ export const ExampleNodeComponent = ({
 };
 
 export const ExampleNodeDefinition: CustomNodeDefinition = {
+  name: "Example Node",
   io: {
     inputs: {
       input: {

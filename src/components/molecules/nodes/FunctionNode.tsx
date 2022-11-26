@@ -1,154 +1,99 @@
-import { highlight, languages } from "prismjs";
-import React, { useEffect } from "react";
-import Editor from "react-simple-code-editor";
+import React, { useEffect, useMemo } from "react";
 import { CustomNodeComponentProps } from "src/classes/nodes/definition/CustomNodeComponent";
 import { NodeHandles } from "src/classes/nodes/definition/io/handles/NodeHandles";
 import { AnyHandle } from "src/classes/nodes/definition/io/handles/types/base/AnyHandle";
 import { CustomNodeDefinition } from "src/classes/nodes/definition/NodeDefinition";
-import { DynamicInputComponent } from "src/components/atoms/DynamicInput";
 import { useNodeId } from "src/react/hooks/context/useNodeId";
 import { useSetData } from "src/react/hooks/state/setters/useSetData";
 import { useSetDefinition } from "src/react/hooks/state/setters/useSetDefinition";
+import { useSetNodeHandles } from "src/react/hooks/state/setters/useSetNodeHandles";
 import { useSetOutput } from "src/react/hooks/state/setters/useSetOutput";
-import { useCodeExecutor } from "src/react/hooks/util/useCodeExecutor";
-import { wrapContent } from "src/styles/layout";
+import {
+  FunctionEditorComponent,
+  FunctionExecutionMode,
+} from "../code/FunctionEditor";
+import { FunctionExecutorComponent } from "../code/FunctionExecutor";
 
 export const FunctionNodeComponent = ({
   inputs,
   definition,
   data,
-}: CustomNodeComponentProps) => {
+}: CustomNodeComponentProps): JSX.Element => {
   const id = useNodeId();
   console.log("Rendering Code Node with id" + id);
   console.log("Definition", definition);
 
   const setNodeDefinition = useSetDefinition();
+  const setInputHandles = useSetNodeHandles(true);
   const setOutput = useSetOutput("output");
   const setData = useSetData();
-  const codeExecutor = useCodeExecutor(...Object.keys(definition.io.inputs));
-  const [paramInput, setParamInput] = React.useState("");
-  console.log("ParamInput", definition.io.inputs);
 
-  const [didExecute, setDidExecute] = React.useState(false);
-  const [error, setError] = React.useState<Error | undefined>(null);
+  const paramsDefinition = useMemo(() => {
+    return Object.keys(definition.io.inputs);
+  }, [definition.io.inputs]);
+  const [executionMode, setExecutionMode] =
+    React.useState<FunctionExecutionMode>(FunctionExecutionMode.Idle);
 
+  // Initial render, set node definition
   useEffect(() => {
     setNodeDefinition(CodeNodeDefinition);
-    setParamInput(Object.keys(CodeNodeDefinition.io.inputs).join(", "));
   }, []);
 
-  const executeCode = () => {
-    const { value, error } = codeExecutor(
-      data.code,
-      ...Object.keys(definition.io.inputs).map((input) => inputs[input])
-    );
-    setOutput(value);
-
-    setDidExecute(true);
-    setError(error);
-  };
-
-  const onTextChange = (newCode: string) => {
-    console.log(newCode);
+  const handleCodeChange = (newCode: string) => {
     setData({ code: newCode });
   };
 
-  const onFunctionParamsChanged = () => {
-    const params: string[] = paramInput
-        .split(",")
-        .map((param) => param.trim())
-        .filter((param) => param.length > 0),
-      nodeHandles = params.reduce((acc: NodeHandles, param: string) => {
+  const handleParamsChange = (newParams: string[]) => {
+    const newInputHandles = newParams.reduce(
+      (acc: NodeHandles, param: string) => {
         acc[param] = {
           type: AnyHandle,
         };
         return acc;
-      }, {}),
-      newDefinition: CustomNodeDefinition = {
-        io: {
-          inputs: nodeHandles,
-          outputs: definition.io.outputs,
-        },
-      };
+      },
+      {}
+    );
 
-    setNodeDefinition(newDefinition);
+    setInputHandles(newInputHandles);
+  };
+
+  const handleExecuteBegin = () => {
+    setExecutionMode(FunctionExecutionMode.Executing);
+  };
+
+  const handleExecuteSuccess = (result: any) => {
+    setExecutionMode(FunctionExecutionMode.Success);
+    setOutput(result);
+  };
+
+  const handleExecuteError = (error: Error) => {
+    setExecutionMode(FunctionExecutionMode.Error);
+    console.error(error);
   };
 
   return (
     <div>
-      <h3>Function Node</h3>
-      <div
-        style={{
-          ...getStyle(didExecute, error),
-        }}
-      >
-        <div
-          style={{
-            flexDirection: "column",
-            display: "flex",
-            padding: "0.5em",
-            alignItems: "flex-start",
-          }}
-        >
-          <div style={{ flexDirection: "row", display: "flex" }}>
-            <div className="code-font">{"("}</div>
-            <DynamicInputComponent
-              onBlur={onFunctionParamsChanged}
-              value={paramInput}
-              onChange={setParamInput}
-            />
-            <div className="code-font">{") => {"}</div>
-          </div>
-          <Editor
-            className="code-font nodrag"
-            value={data.code ?? ""}
-            onValueChange={onTextChange}
-            highlight={(code) => highlight(code, languages.js, "js")}
-            style={{
-              minWidth: "10rem",
-              minHeight: "3rem",
-              marginLeft: "0.1rem",
-              fontSize: "inherit",
-              fontFamily: "inherit",
-            }}
-          />
-
-          <div className="code-font">{"}"}</div>
-        </div>
-
-        {error && (
-          <div
-            style={{
-              marginTop: "0.25rem",
-              width: "100%",
-              backgroundColor: "rgba(178, 34, 34, 0.2)",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              {error.message.toString()}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <button
-        onClick={executeCode}
-        style={{
-          marginTop: "10px",
-        }}
-      >
-        Run
-      </button>
+      <FunctionEditorComponent
+        params={paramsDefinition}
+        code={data.code}
+        mode={executionMode}
+        onCodeChange={handleCodeChange}
+        onParamsChange={handleParamsChange}
+      />
+      <FunctionExecutorComponent
+        paramsDefinition={paramsDefinition}
+        paramsData={Object.values(inputs)}
+        code={data.code}
+        onExecuteBegin={handleExecuteBegin}
+        onExecuteSuccess={handleExecuteSuccess}
+        onExecuteError={handleExecuteError}
+      />
     </div>
   );
 };
 
 export const CodeNodeDefinition: CustomNodeDefinition = {
+  name: "Function Node",
   io: {
     inputs: {
       input: {
@@ -163,25 +108,4 @@ export const CodeNodeDefinition: CustomNodeDefinition = {
       },
     },
   },
-};
-
-const getStyle = (didExecute: boolean, error?: Error): React.CSSProperties => {
-  if (error) return errorStyle;
-  else if (didExecute) return successStyle;
-  else return defaultStyle;
-};
-
-const successStyle: React.CSSProperties = {
-  border: "1px solid rgba(75, 181, 67, 0.7)",
-  ...wrapContent,
-};
-
-const errorStyle: React.CSSProperties = {
-  border: "1px solid rgba(178, 34, 34, 0.7)",
-  ...wrapContent,
-};
-
-const defaultStyle: React.CSSProperties = {
-  border: "1px solid rgba(0, 0, 0, 0.7)",
-  ...wrapContent,
 };
