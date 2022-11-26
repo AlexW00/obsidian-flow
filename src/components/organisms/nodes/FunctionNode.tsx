@@ -11,8 +11,8 @@ import { useSetOutput } from "src/react/hooks/state/setters/useSetOutput";
 import {
   FunctionEditorComponent,
   FunctionExecutionMode,
-} from "../../molecules/code/FunctionEditor";
-import { FunctionExecutorComponent } from "../../molecules/code/FunctionExecutor";
+} from "../../molecules/inputs/code/FunctionEditor";
+import { FunctionExecutorComponent } from "../../molecules/inputs/code/FunctionExecutor";
 
 export const FunctionNodeComponent = ({
   inputs,

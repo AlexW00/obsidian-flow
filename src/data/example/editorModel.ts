@@ -4,6 +4,7 @@ import { ExampleNodeComponent } from "src/components/organisms/nodes/ExampleNode
 import EditorModel from "../models/EditorModel";
 import { ViewerNodeComponent } from "src/components/organisms/nodes/ViewerNode";
 import { TextInputNodeComponent } from "src/components/organisms/nodes/TextInputNode";
+import { SliderNodeComponent } from "src/components/organisms/nodes/SliderNode";
 
 const nodes = [
   {
@@ -90,6 +91,23 @@ const nodes = [
       data: {},
     },
     position: { x: 0, y: 350 },
+  },
+  {
+    id: "6",
+    type: "custom",
+    data: {
+      component: SliderNodeComponent,
+      definition: {
+        io: {
+          inputs: {},
+          outputs: {},
+        },
+      },
+      outputs: {},
+      inputs: {},
+      data: {},
+    },
+    position: { x: 100, y: 200 },
   },
 ] as Node[];
 

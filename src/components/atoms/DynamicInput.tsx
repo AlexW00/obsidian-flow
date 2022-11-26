@@ -1,11 +1,12 @@
 import React, { memo, useEffect, useRef, useState } from "react";
 
 export type DynamicInputProps = {
-  value: string;
-  onChange: (newValue: string) => void;
+  value: string | number;
+  onChange: (newValue: string | number) => void;
   onBlur?: () => void;
   onFocus?: () => void;
   style?: React.CSSProperties;
+  type?: "text" | "number";
 };
 
 // An input field, that dynamically resizes to fit its content.
@@ -22,7 +23,7 @@ export const DynamicInputComponent = memo(
     }, [props.value]);
 
     return (
-      <div>
+      <div style={props.style}>
         <span
           ref={refSpan}
           style={{
@@ -36,6 +37,7 @@ export const DynamicInputComponent = memo(
 
         <input
           className="code-font nodrag"
+          type={props.type}
           style={{
             border: "none",
             outline: "none",
@@ -48,7 +50,6 @@ export const DynamicInputComponent = memo(
             lineHeight: "inherit",
             width: width,
             minWidth: "1ch",
-            ...props.style,
           }}
           onBlur={props.onBlur}
           onFocus={props.onFocus}
