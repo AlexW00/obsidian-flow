@@ -20,8 +20,7 @@ export const FunctionNodeComponent = ({
   data,
 }: CustomNodeComponentProps): JSX.Element => {
   const id = useNodeId();
-  console.log("Rendering Code Node with id" + id);
-  console.log("Definition", definition);
+  console.log("Rendering Function Node with id" + id);
 
   const setNodeDefinition = useSetDefinition();
   const setInputHandles = useSetNodeHandles(true);
@@ -68,6 +67,7 @@ export const FunctionNodeComponent = ({
 
   const handleExecuteError = (error: Error) => {
     setExecutionMode(FunctionExecutionMode.Error);
+    setOutput(undefined);
     console.error(error);
   };
 
@@ -82,7 +82,7 @@ export const FunctionNodeComponent = ({
       />
       <FunctionExecutorComponent
         paramsDefinition={paramsDefinition}
-        paramsData={Object.values(inputs)}
+        paramsData={Object.keys(definition.io.inputs).map((key) => inputs[key])}
         code={data.code}
         onExecuteBegin={handleExecuteBegin}
         onExecuteSuccess={handleExecuteSuccess}

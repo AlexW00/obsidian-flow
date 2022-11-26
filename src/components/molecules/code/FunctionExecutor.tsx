@@ -1,5 +1,6 @@
 import React, { memo, useEffect } from "react";
 import { useCodeExecutor } from "src/react/hooks/util/useCodeExecutor";
+import { shallowCompareArrays } from "src/util/shallowCompareArrays";
 
 export type FunctionExecutorProps = {
   paramsDefinition: string[];
@@ -11,13 +12,10 @@ export type FunctionExecutorProps = {
 };
 
 const areEqual = (a: FunctionExecutorProps, b: FunctionExecutorProps) => {
-  const codeIsEqual = a.code == b.code,
-    paramsDefinitionIsEqual = a.paramsDefinition == b.paramsDefinition;
-
-  // shallow compare paramsData
-  const paramsDataIsEqual = a.paramsData.every(
-    (param, index) => param == b.paramsData[index]
-  );
+  const codeIsEqual = a.code === b.code,
+    paramsDefinitionIsEqual = a.paramsDefinition === b.paramsDefinition,
+    paramsDataIsEqual = shallowCompareArrays(a.paramsData, b.paramsData);
+  console.log("eq", codeIsEqual, paramsDefinitionIsEqual, paramsDataIsEqual);
   return codeIsEqual && paramsDefinitionIsEqual && paramsDataIsEqual;
 };
 
@@ -44,7 +42,7 @@ export const FunctionExecutorComponent = memo(
           setError(error);
           onExecuteError && onExecuteError(error);
         });
-    }, [code, paramsData]);
+    }, [code, paramsDefinition, paramsData]);
 
     return error ? (
       <div

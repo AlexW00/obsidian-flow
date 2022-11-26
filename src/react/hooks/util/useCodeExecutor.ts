@@ -8,7 +8,6 @@ export const useCodeExecutor = (...paramNames: string[]): CodeExecutor => {
       const codeExecutor = new AsyncFunction(...paramNames, code);
       return codeExecutor(...params);
     } catch (error) {
-      console.log("executed codeExecutor error");
       return { error };
     }
   };

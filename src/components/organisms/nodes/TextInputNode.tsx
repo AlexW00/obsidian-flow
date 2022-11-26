@@ -8,7 +8,7 @@ import { useSetOutput } from "src/react/hooks/state/setters/useSetOutput";
 import { max } from "src/styles/layout";
 
 export const TextInputNodeComponent = ({
-  data,
+  data = "",
 }: CustomNodeComponentProps): JSX.Element => {
   const setNodeDefinition = useSetDefinition();
   const setOutput = useSetOutput("output");
