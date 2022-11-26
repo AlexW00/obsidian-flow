@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { CodeEditorComponent } from "src/components/atoms/CodeEditor";
 import { ParameterEditorComponent } from "src/components/atoms/ParameterEditor";
 import { wrapContent } from "src/styles/layout";
@@ -18,42 +18,47 @@ export type FunctionEditorProps = {
   onCodeChange?: (newCode: string) => void;
 };
 
-export const FunctionEditorComponent = ({
-  params,
-  code,
-  mode,
-  onParamsChange,
-  onCodeChange,
-}: FunctionEditorProps): JSX.Element => {
-  const handleParamsChange = (newParams: string[]) => {
-    if (onParamsChange) onParamsChange(newParams);
-  };
+export const FunctionEditorComponent = memo(
+  ({
+    params,
+    code,
+    mode,
+    onParamsChange,
+    onCodeChange,
+  }: FunctionEditorProps): JSX.Element => {
+    const handleParamsChange = (newParams: string[]) => {
+      if (onParamsChange) onParamsChange(newParams);
+    };
 
-  const handleCodeChange = (newCode: string) => {
-    if (onCodeChange) onCodeChange(newCode);
-  };
+    const handleCodeChange = (newCode: string) => {
+      if (onCodeChange) onCodeChange(newCode);
+    };
 
-  return (
-    <div
-      style={{
-        ...getStyle(mode),
-      }}
-    >
+    return (
       <div
         style={{
-          flexDirection: "column",
-          display: "flex",
-          padding: "0.5em",
-          alignItems: "flex-start",
+          ...getStyle(mode),
         }}
       >
-        <ParameterEditorComponent value={params} onBlur={handleParamsChange} />
-        <CodeEditorComponent code={code} onBlur={handleCodeChange} />
-        <div className="code-font">{"}"}</div>
+        <div
+          style={{
+            flexDirection: "column",
+            display: "flex",
+            padding: "0.5em",
+            alignItems: "flex-start",
+          }}
+        >
+          <ParameterEditorComponent
+            value={params}
+            onBlur={handleParamsChange}
+          />
+          <CodeEditorComponent code={code} onBlur={handleCodeChange} />
+          <div className="code-font">{"}"}</div>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 const getStyle = (mode: FunctionExecutionMode): React.CSSProperties => {
   switch (mode) {

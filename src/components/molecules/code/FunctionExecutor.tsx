@@ -18,13 +18,6 @@ const areEqual = (a: FunctionExecutorProps, b: FunctionExecutorProps) => {
   const paramsDataIsEqual = a.paramsData.every(
     (param, index) => param == b.paramsData[index]
   );
-  console.log(
-    "areEqual",
-    codeIsEqual,
-    paramsDefinitionIsEqual,
-    paramsDataIsEqual
-  );
-  console.log(a.paramsData, b.paramsData);
   return codeIsEqual && paramsDefinitionIsEqual && paramsDataIsEqual;
 };
 
